@@ -24,11 +24,11 @@ int main() {
 	mean = sum / count;
 
 	for (int i = 0; i < 10; i++) {
-		stddev = stddev + ((num[i] - mean) * (num[i] - mean));
+		stddev = stddev + pow((num[i] - mean),2);
 	}
 	stddev = sqrt(stddev / count);
 
-	cout << "\nThe mean of numbers is: " << mean << endl;
+	cout << "The mean of numbers is: " << mean << endl;
 	cout << "The minimum of numbers is: " << minimum << endl;
 	cout << "The maximum of numbers is: " << maximum << endl;
 	cout << "The standard deviation of numbers is: " << stddev << endl;	
