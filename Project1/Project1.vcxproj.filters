@@ -15,9 +15,32 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Test_image.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="CNN_weights.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="bias1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="bias2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="bias3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="bias4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="output_file.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="class.h">

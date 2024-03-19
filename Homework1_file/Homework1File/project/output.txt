@@ -1,0 +1,4 @@
+The mean of numbers is: 2.95
+The minimum of numbers is: 1
+The maximum of numbers is: 5.9
+The standard deviation of numbers is: 1.5756
