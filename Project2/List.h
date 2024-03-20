@@ -1,7 +1,13 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
 #include <algorithm>
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include <string>
+#include <list>
+
 using namespace std;
 
 template <typename Object>
@@ -96,7 +102,7 @@ public:
 
         // Protected constructor for const_iterator.
         // Expects a pointer that represents the current position.
-       const_iterator(const List<Object>& lst, Node* p) : theList{ &lst }, current{ p } {}
+        const_iterator(const List<Object>& lst, Node* p) : theList{ &lst }, current{ p }, head{ lst.head } {}
 
         friend class List<Object>;
     };
@@ -151,19 +157,6 @@ public:
 			--(*this);
 			return old;
 		}
-    private:
-
-        Node* find_previous(Node* current)
-        {
-            Node* prev = nullptr;
-            Node* temp = head;
-            while (temp != current)
-            {
-                prev = temp;
-                temp = temp->next;
-            }
-            return prev;
-        }
 
     protected:
         // Protected constructor for iterator.
@@ -194,11 +187,13 @@ public:
 
     List& operator= (const List& rhs)
     {
-        List copy = rhs;
-        std::swap(*this, copy);
+        if(this != &rhs)
+		{
+			List copy = rhs;
+			std::swap(*this, copy);
+		}
         return *this;
     }
-
 
     List(List&& rhs)
         : theSize{ rhs.theSize }, head{ rhs.head }
@@ -215,11 +210,23 @@ public:
         return *this;
     }
 
+    Node* find_previous(Node* current) const
+    {
+        Node* prev = nullptr;
+        Node* temp = head;
+        while (temp != current)
+        {
+            prev = temp;
+            temp = temp->next;
+        }
+        return prev;
+    }
+
     // Return iterator representing beginning of list.
     // Mutator version is first, then accessor version.
     iterator begin()
     {
-        return iterator(head->next);
+        return iterator(*this, head->next);
     }
 
     const_iterator begin() const
@@ -232,12 +239,12 @@ public:
     // Mutator version is first, then accessor version.
     iterator end()
     {
-        return iterator(nullptr);
+        return iterator(*this,nullptr);
     }
 
     const_iterator end() const
     {
-        return const_iterator(nullptr);
+        return const_iterator(*this, nullptr);
     }
 
     // Return number of elements currently in the list.
@@ -256,6 +263,7 @@ public:
     {
         while (!empty())
             pop_front();
+        // Delete the head node after clearing the list
     }
 
     // front, back, push_front, push_back, pop_front, and pop_back
@@ -295,13 +303,18 @@ public:
         erase(begin());
     }
 
+    void pop_back()
+	{
+		erase(--end());
+	}
+
     // Insert x before itr.
     iterator insert(iterator itr, const Object& x)
     {
 		Node* p = itr.current;
 		++theSize;
         p->next = new Node{ x, p->next };
-        return iterator(p->next);
+        return iterator(*this,p->next);
 	}
 
     // Insert x before itr.
@@ -310,14 +323,14 @@ public:
         Node* p = itr.current;
         ++theSize;
         p->next = new Node{std::move(x), p->next};
-        return iterator(p->next);
+        return iterator(*this, p->next);
     }
 
     // Erase item at itr.
     iterator erase(iterator itr)
     {
         Node* p = itr.current;
-        iterator retVal{ p->next };
+        iterator retVal{*this, p->next };
         p->next = p->next->next;
         delete p;
         --theSize;
@@ -333,6 +346,69 @@ private:
         theSize = 0;
         head = new Node;
     }
+};  
+
+
+class Square
+{
+public:
+    explicit Square(int s = 0) : side{ s }
+    { }
+
+    void setSide(int s = 1)
+    {
+        side = s;
+    }
+    int getSide() const
+    {
+        return side;
+    }
+    int getArea() const
+    {
+        return side * side;
+    }
+    int getPerimeter() const
+    {
+        return 4 * side;
+    }
+
+    void print(ostream& out = cout) const
+    {
+        out << "(square " << getSide() << ")" << endl;
+    }
+    bool operator< (const Square& rhs) const
+    {
+        return getSide() < rhs.getSide();
+    }
+
+private:
+    int side;
 };
+
+// Define an output operator for Square
+ostream& operator<< (ostream& out, const Square& rhs)
+{
+    rhs.print(out);
+    return out;
+}
+
+
+
+/**
+* Return the maximum item in array a.
+* Assumes a.size( ) > 0.
+* Comparable objects must provide operator< and operator=
+*/
+template <typename Comparable>
+const Comparable& findMax(const vector<Comparable>& a)
+{
+    int maxIndex = 0;
+
+    for (int i = 1; i < a.size(); ++i)
+        if (a[maxIndex] < a[i])
+            maxIndex = i;
+
+    return a[maxIndex];
+}
 
 #endif

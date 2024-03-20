@@ -23,8 +23,5 @@
     <ClInclude Include="List.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="square.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
